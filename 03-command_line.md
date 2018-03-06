@@ -20,7 +20,16 @@ Here's a list of items with which you should be familiar:
 
 Make a cheat sheet for yourself: a list of at least **ten** commands and what they do.  (Use the 8 items above and add a couple of your own.)  
 
-> > REPLACE THIS TEXT WITH YOUR RESPONSE
+1. `cwd`: Show path of current working directory.
+2. `mkdir` dir_name: Create a directory.
+3. `rm -R dir_path`: Delete a directory and contents.
+4. `touch file_name`: Create a file.
+5. `rm file_path`: Delete a file.
+6. `mv orig_name new_name`: Rename a file.
+7. `ls -1a | egrep "^\."`: List hidden files.
+8. `cp source_path target_path`: Copy a file.
+9. `egrep regex file`: Search file for lines matching a regex pattern.
+10. `open file`: Opens the file in its default application (at least in MacOS).
 
 ---
 
@@ -28,14 +37,20 @@ Make a cheat sheet for yourself: a list of at least **ten** commands and what th
 
 What do the following commands do:  
 `ls`  
-`ls -a`  
-`ls -l`  
-`ls -lh`  
-`ls -lah`  
-`ls -t`  
-`ls -Glp`  
+`ls -a`
+`ls -l`
+`ls -lh`
+`ls -lah`
+`ls -t`
+`ls -Glp`
 
-> > REPLACE THIS TEXT WITH YOUR RESPONSE
+1. `ls`: List files in the current working directory.  
+2. `ls -a`: List files including hidden files.
+3. `ls -l`: List files in long format, one per line.
+4. `ls -lh`: List files in long format with human readable file sizes.
+5. `ls -lah`: List files in long format with human readable file sizes including hidden files.
+6. `ls -t`: List files sorted by time modified.
+7. `ls -Glp`: List files in long format using colors with slashes after directory names.
 
 ---
 
@@ -43,7 +58,11 @@ What do the following commands do:
 
 Explore these other [ls options](http://www.techonthenet.com/unix/basic/ls.php) and pick 5 of your favorites:
 
-> > REPLACE THIS TEXT WITH YOUR RESPONSE
+1. `ls -1`: List one file name per line.
+2. `ls *`: List files and their subdirectories (down one level).
+3. `ls *.py`: List only Python source files.
+4. `ls -m`: List files as a flat comma separated list.
+5. `ls -R`: List files recursively.
 
 ---
 
@@ -51,7 +70,11 @@ Explore these other [ls options](http://www.techonthenet.com/unix/basic/ls.php) 
 
 What does `xargs` do? Give an example of how to use it.
 
-> > REPLACE THIS TEXT WITH YOUR RESPONSE
+It breaks apart standard input using space, newline, and tab characters as delimiters. Then it uses the resulting strings as the arguments to the given utility. If there are too many arguments for one call, it will call the utility multiple times.
+
+An example could be something like `find . -name \*.png | xargs rm`, which would recursively delete .png files. This would only work if their names didn't contain spaces. It looks like some versions of `xargs` support a `-d` flag that allows you to override the delimiter, but the version of `xargs` I have on my Mac doesn't support the `-d` flag. (Passing `-delete` or `-exec rm {} +` to `find` would probably be a better way to do this anyway.)
+
+
 
  
 
