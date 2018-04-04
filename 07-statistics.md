@@ -120,7 +120,63 @@ How do frequentist and Bayesian statistics compare?
 The following exercises are optional, but we highly encourage you to complete them if you have the time.
 
 ### Q7. [Think Stats Chapter 7 Exercise 1](statistics/7-1-weight_vs_age.md) (correlation of weight vs. age)
-In this exercise, you will compute the effect size of correlation.  Correlation measures the relationship of two variables, and data science is about exploring relationships in data.    
+In this exercise, you will compute the effect size of correlation.  Correlation measures the relationship of two variables, and data science is about exploring relationships in data.
+
+>> It looks like there's a relationship, but it's subtle and nonlinear.
+
+```python
+import os
+import numpy as np
+import pandas as pd
+import seaborn as sns
+from matplotlib import pyplot as plt
+metis_folder_path = os.path.expanduser('~/Documents/Projects/Metis/Prework')
+thinkstats_path = os.path.join(metis_folder_path, 'ThinkStats2-master/code')
+img_path = os.path.join(metis_folder_path, 'dsp/img')
+os.chdir(thinkstats_path)
+import nsfg
+
+
+# Print the two correlations.
+age_bins = np.arange(10, 48, 3)
+data = preg[preg.outcome == 1][['agepreg', 'totalwgt_lb']]
+data = data.dropna(subset=['agepreg', 'totalwgt_lb'])
+data['mothers_age_bin'] = pd.cut(data.agepreg, age_bins)
+
+pearson_cor = data.agepreg.corr(data.totalwgt_lb, method='pearson')
+spearman_cor = data.agepreg.corr(data.totalwgt_lb, method='spearman')
+
+print(f"Pearson's correlation: {pearson_cor:.4f}")
+print(f"Spearman's rank correlation: {spearman_cor:.4f}")
+
+# Make the scatter plot.
+grid = sns.jointplot(x='agepreg', y='totalwgt_lb', data=data, stat_func=None, alpha=0.5)
+grid.ax_joint.set_xlabel("Mother's age in years")
+grid.ax_joint.set_ylabel('Birth weight in pounds')
+grid.fig.set(dpi=100)
+save_path = os.path.join(img_path, 'mothers_age_vs_birth_weight_scatter.png')
+grid.fig.savefig(save_path)
+
+# Make the mother's age vs. birth weight plot.
+grouped_data = data.groupby(['mothers_age_bin'])['totalwgt_lb']
+percentiles = [25, 50, 75]
+cols = [grouped_data.aggregate(lambda g: np.percentile(g, p)) for p in percentiles]
+df = pd.DataFrame({f'{p}th percentile': col for p, col in zip(percentiles, cols)})
+fig = plt.figure(figsize=(12, 4), dpi=100)
+ax = plt.axes()
+df.plot(xticks=range(len(df.index)), ax=ax)
+ax.set_ylabel('Birth weight in pounds')
+ax.set_xlabel("Mother's age interval")
+save_path = os.path.join(img_path, 'nth_weight_percentile_by_mothers_age.png')
+fig.savefig(save_path)
+```    
+```
+Pearson's correlation: 0.0688
+Spearman's rank correlation: 0.0946
+```
+![](/img/mothers_age_vs_birth_weight_scatter.png)
+
+![](/img/nth_weight_percentile_by_mothers_age.png) 
 
 ### Q8. [Think Stats Chapter 8 Exercise 2](statistics/8-2-sampling_dist.md) (sampling distribution)
 In the theoretical world, all data related to an experiment or a scientific problem would be available.  In the real world, some subset of that data is available.  This exercise asks you to take samples from an exponential distribution and examine how the standard error and confidence intervals vary with the sample size.
